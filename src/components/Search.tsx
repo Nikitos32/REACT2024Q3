@@ -12,19 +12,23 @@ export default class Search extends Component<Props> {
     input: '',
   };
 
-  handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem(
-      'lastRequest',
-      `https://swapi.dev/api/people/?search=${this.state.input}`
-    );
-    fetch(`https://swapi.dev/api/people/?search=${this.state.input}`)
+  fetchData = (request: string) => {
+    fetch(request)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
         this.props.handlePeople(JSON.stringify(data));
       });
+  };
+
+  handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    localStorage.setItem(
+      'lastRequest',
+      `https://swapi.dev/api/people/?search=${this.state.input}`
+    );
+    this.fetchData(`https://swapi.dev/api/people/?search=${this.state.input}`);
   };
 
   handleInput = (e: ChangeEvent) => {
@@ -35,13 +39,7 @@ export default class Search extends Component<Props> {
 
   componentDidMount(): void {
     if (localStorage.getItem('lastRequest')) {
-      fetch(`${localStorage.getItem('lastRequest')}`)
-        .then((data) => {
-          return data.json();
-        })
-        .then((data) => {
-          this.props.handlePeople(JSON.stringify(data));
-        });
+      this.fetchData(`${localStorage.getItem('lastRequest')}`);
     }
   }
 
@@ -54,7 +52,6 @@ export default class Search extends Component<Props> {
           onChange={(e: ChangeEvent) => this.handleInput(e)}
         />
         <button type="submit">Search</button>
-        <p>{this.props.people}</p>
       </form>
     );
   }

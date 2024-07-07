@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react';
 import Search from './components/Search';
+import ItemList from './components/ItemList';
 
 export default class App extends Component {
   state = {
@@ -14,10 +15,19 @@ export default class App extends Component {
 
   render(): ReactNode {
     return (
-      <Search
-        people={this.state.starWarsPeople}
-        handlePeople={this.handlePeople}
-      />
+      <>
+        <Search
+          people={this.state.starWarsPeople}
+          handlePeople={this.handlePeople}
+        />
+        <ItemList
+          results={
+            this.state.starWarsPeople
+              ? JSON.parse(this.state.starWarsPeople).results
+              : ''
+          }
+        />
+      </>
     );
   }
 }
