@@ -14,6 +14,10 @@ export default class Search extends Component<Props> {
 
   handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    localStorage.setItem(
+      'lastRequest',
+      `https://swapi.dev/api/people/?search=${this.state.input}`
+    );
     fetch(`https://swapi.dev/api/people/?search=${this.state.input}`)
       .then((data) => {
         return data.json();
@@ -28,6 +32,18 @@ export default class Search extends Component<Props> {
       input: (e.target as HTMLInputElement).value,
     });
   };
+
+  componentDidMount(): void {
+    if (localStorage.getItem('lastRequest')) {
+      fetch(`${localStorage.getItem('lastRequest')}`)
+        .then((data) => {
+          return data.json();
+        })
+        .then((data) => {
+          this.props.handlePeople(JSON.stringify(data));
+        });
+    }
+  }
 
   render(): ReactNode {
     return (
