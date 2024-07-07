@@ -40,7 +40,7 @@ export default class Search extends Component<Props> {
 
   handleInput = (e: ChangeEvent) => {
     this.setState({
-      input: (e.target as HTMLInputElement).value,
+      input: (e.target as HTMLInputElement).value.trim(),
     });
   };
 
