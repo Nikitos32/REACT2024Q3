@@ -1,6 +1,6 @@
 import { Component, ReactNode } from 'react';
 
-export default class App extends Component {
+export default class ItemList extends Component {
   render(): ReactNode {
     return <></>;
   }
