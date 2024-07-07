@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
 import Search from './components/Search';
 import ItemList from './components/ItemList';
+import ErrorBoundary from './components/ErrorBoundary';
 
 export default class App extends Component {
   state = {
@@ -15,7 +16,7 @@ export default class App extends Component {
 
   render(): ReactNode {
     return (
-      <>
+      <ErrorBoundary fallback={<p>Ooops...</p>}>
         <Search
           people={this.state.starWarsPeople}
           handlePeople={this.handlePeople}
@@ -27,7 +28,7 @@ export default class App extends Component {
               : ''
           }
         />
-      </>
+      </ErrorBoundary>
     );
   }
 }

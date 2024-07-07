@@ -10,6 +10,7 @@ type Props = Readonly<SearchProps>;
 export default class Search extends Component<Props> {
   state = {
     input: '',
+    error: '',
   };
 
   fetchData = (request: string) => {
@@ -44,15 +45,21 @@ export default class Search extends Component<Props> {
   }
 
   render(): ReactNode {
+    if (this.state.error) throw new Error();
     return (
-      <form onSubmit={(e: FormEvent) => this.handleSubmit(e)}>
-        <input
-          type="search"
-          placeholder="Search ..."
-          onChange={(e: ChangeEvent) => this.handleInput(e)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <>
+        <form onSubmit={(e: FormEvent) => this.handleSubmit(e)}>
+          <input
+            type="search"
+            placeholder="Search ..."
+            onChange={(e: ChangeEvent) => this.handleInput(e)}
+          />
+          <button type="submit">Search</button>
+        </form>
+        <button onClick={() => this.setState({ error: 'yes' })}>
+          Throw an error
+        </button>
+      </>
     );
   }
 }
