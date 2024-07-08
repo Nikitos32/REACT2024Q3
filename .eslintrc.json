@@ -21,9 +21,12 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "react"
+        "react",
+        "react-compiler"
     ],
-    "rules": {},
+    "rules": {
+        "react-compiler/react-compiler": "error"
+    },
     "settings": {
         "react": {
             "version": "detect"
