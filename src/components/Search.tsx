@@ -1,18 +1,18 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface SearchProps {
   handlePeople: (people: string) => void;
 }
 
 export const Search = ({ handlePeople }: SearchProps) => {
-  const [input, setInput] = useState<string>();
+  const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>();
-
-  const setRequestToLS = (request: string) => {
-    localStorage.setItem('lastRequest', request);
-  };
+  const [lastSearch, setLastSearch] = useState<string>('');
+  const { item } = useLocalStorage(lastSearch);
 
   const fetchData = (request: string) => {
+    setLastSearch(request);
     fetch(request)
       .then((data) => {
         return data.json();
@@ -26,7 +26,6 @@ export const Search = ({ handlePeople }: SearchProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setRequestToLS(`https://swapi.dev/api/people/?search=${input}`);
     fetchData(`https://swapi.dev/api/people/?search=${input}`);
   };
 
@@ -36,8 +35,9 @@ export const Search = ({ handlePeople }: SearchProps) => {
 
   useEffect(() => {
     setLoading(true);
-    if (localStorage.getItem('lastRequest')) {
-      fetchData(`${localStorage.getItem('lastRequest')}`);
+    console.log(item);
+    if (item) {
+      fetchData(item);
     } else {
       fetchData(`https://swapi.dev/api/people/?search=${input}`);
     }
@@ -60,7 +60,6 @@ export const Search = ({ handlePeople }: SearchProps) => {
             type="button"
             onClick={() => {
               fetchData(`https://swapi.dev/api/people/`);
-              setRequestToLS(`https://swapi.dev/api/people/`);
             }}
           >
             reset
