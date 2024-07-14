@@ -1,89 +1,78 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 interface SearchProps {
-  people: string;
   handlePeople: (people: string) => void;
 }
 
-type Props = Readonly<SearchProps>;
+export const Search = ({ handlePeople }: SearchProps) => {
+  const [input, setInput] = useState<string>();
+  const [loading, setLoading] = useState<boolean>();
 
-export default class Search extends Component<Props> {
-  state = {
-    input: '',
-    error: '',
-    loading: false,
-  };
-
-  setRequestToLS = (request: string) => {
+  const setRequestToLS = (request: string) => {
     localStorage.setItem('lastRequest', request);
   };
 
-  fetchData = (request: string) => {
+  const fetchData = (request: string) => {
     fetch(request)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        this.props.handlePeople(JSON.stringify(data));
-        this.setState({ loading: false });
+        handlePeople(JSON.stringify(data));
+        setLoading(false);
       });
   };
 
-  handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    this.setState({ loading: true });
-    this.setRequestToLS(
-      `https://swapi.dev/api/people/?search=${this.state.input}`
-    );
-    this.fetchData(`https://swapi.dev/api/people/?search=${this.state.input}`);
+    setLoading(true);
+    setRequestToLS(`https://swapi.dev/api/people/?search=${input}`);
+    fetchData(`https://swapi.dev/api/people/?search=${input}`);
   };
 
-  handleInput = (e: ChangeEvent) => {
-    this.setState({
-      input: (e.target as HTMLInputElement).value.trim(),
-    });
+  const handleInput = (e: ChangeEvent) => {
+    setInput((e.target as HTMLInputElement).value.trim());
   };
 
-  componentDidMount(): void {
-    this.setState({ loading: true });
+  useEffect(() => {
+    setLoading(true);
     if (localStorage.getItem('lastRequest')) {
-      this.fetchData(`${localStorage.getItem('lastRequest')}`);
+      fetchData(`${localStorage.getItem('lastRequest')}`);
     } else {
-      this.fetchData(
-        `https://swapi.dev/api/people/?search=${this.state.input}`
-      );
+      fetchData(`https://swapi.dev/api/people/?search=${input}`);
     }
-  }
+  }, []);
 
-  render(): ReactNode {
-    if (this.state.error) throw new Error();
-    if (this.state.loading) {
-      return <p>Loading...</p>;
-    } else
-      return (
-        <div>
-          <form onSubmit={(e: FormEvent) => this.handleSubmit(e)}>
-            <input
-              type="search"
-              placeholder="Search ..."
-              onChange={(e: ChangeEvent) => this.handleInput(e)}
-              required={true}
-            />
-            <button type="submit">Search</button>
-            <button
-              type="button"
-              onClick={() => {
-                this.fetchData(`https://swapi.dev/api/people/`);
-                this.setRequestToLS(`https://swapi.dev/api/people/`);
-              }}
-            >
-              reset
-            </button>
-          </form>
-          <button onClick={() => this.setState({ error: 'yes' })}>
-            Throw an error
+  if (loading) {
+    return <p>Loading...</p>;
+  } else
+    return (
+      <div>
+        <form onSubmit={(e: FormEvent) => handleSubmit(e)}>
+          <input
+            type="search"
+            placeholder="Search ..."
+            onChange={(e: ChangeEvent) => handleInput(e)}
+            required={true}
+          />
+          <button type="submit">Search</button>
+          <button
+            type="button"
+            onClick={() => {
+              fetchData(`https://swapi.dev/api/people/`);
+              setRequestToLS(`https://swapi.dev/api/people/`);
+            }}
+          >
+            reset
           </button>
-        </div>
-      );
-  }
-}
+        </form>
+        <button
+          onClick={() => {
+            throw new Error();
+          }}
+        >
+          Throw an error
+        </button>
+      </div>
+    );
+};

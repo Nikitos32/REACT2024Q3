@@ -1,34 +1,21 @@
-import { Component, ReactNode } from 'react';
-import Search from './components/Search';
-import ItemList from './components/ItemList';
+import { useState } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
+import { Search } from './components/Search';
+import { ItemList } from './components/ItemList';
 
-export default class App extends Component {
-  state = {
-    starWarsPeople: '',
+export const App = () => {
+  const [starWarsPeople, setStarWarsPeople] = useState<string>();
+
+  const handlePeople = (people: string) => {
+    setStarWarsPeople(people);
   };
 
-  handlePeople = (people: string) => {
-    this.setState({
-      starWarsPeople: people,
-    });
-  };
-
-  render(): ReactNode {
-    return (
-      <ErrorBoundary fallback={<p>Ooops...</p>}>
-        <Search
-          people={this.state.starWarsPeople}
-          handlePeople={this.handlePeople}
-        />
-        <ItemList
-          results={
-            this.state.starWarsPeople
-              ? JSON.parse(this.state.starWarsPeople).results
-              : ''
-          }
-        />
-      </ErrorBoundary>
-    );
-  }
-}
+  return (
+    <ErrorBoundary fallback={<p>Ooops...</p>}>
+      <Search handlePeople={handlePeople} />
+      <ItemList
+        results={starWarsPeople ? JSON.parse(starWarsPeople).results : ''}
+      />
+    </ErrorBoundary>
+  );
+};
