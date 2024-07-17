@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
 
-export const useLocalStorage = (
-  lastSearch: string
-): {
+export const useLocalStorage = (): {
   item: string;
+  handleItem: (URL: string) => void;
 } => {
-  const [item, setItem] = useState<string>('');
-  console.log(lastSearch);
-  const setLocalStorageItem = (lastSearch: string) => {
-    localStorage.setItem('lastRequest', lastSearch as string);
+  const [item, setItem] = useState<string>(
+    localStorage.getItem('lastRequest') as string
+  );
+
+  const handleItem = (URL: string) => {
+    setItem(() => URL);
+    console.log('state', item);
   };
 
   useEffect(() => {
-    setItem(localStorage.getItem('lastRequest') as string);
+    localStorage.setItem('lastRequest', item as string);
     return () => {
-      setLocalStorageItem(lastSearch);
+      localStorage.setItem('lastRequest', item as string);
     };
-  }, [lastSearch]);
+  }, [item]);
 
-  return { item };
+  return { item, handleItem };
 };

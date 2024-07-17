@@ -8,11 +8,9 @@ interface SearchProps {
 export const Search = ({ handlePeople }: SearchProps) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>();
-  const [lastSearch, setLastSearch] = useState<string>('');
-  const { item } = useLocalStorage(lastSearch);
+  const { item, handleItem } = useLocalStorage();
 
   const fetchData = (request: string) => {
-    setLastSearch(request);
     fetch(request)
       .then((data) => {
         return data.json();
@@ -20,6 +18,7 @@ export const Search = ({ handlePeople }: SearchProps) => {
       .then((data) => {
         handlePeople(JSON.stringify(data));
         setLoading(false);
+        handleItem(request);
       });
   };
 
@@ -35,7 +34,6 @@ export const Search = ({ handlePeople }: SearchProps) => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(item);
     if (item) {
       fetchData(item);
     } else {
