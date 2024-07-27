@@ -14,20 +14,29 @@ interface ItemListProps {
 
 export const ItemList = ({ results }: ItemListProps) => {
   return (
-    <>
-      <h1>Results: </h1>
-      {results &&
-        results.map((elem) => {
-          return (
-            <Item
-              key={elem.created}
-              name={elem.name}
-              height={elem.height}
-              mass={elem.mass}
-              birthYear={elem.birth_year}
-            />
-          );
-        })}
-    </>
+    <div className="flex p-5 gap-5 flex-col grow">
+      <div className="flex flex-col gap-5">
+        <h1 className="font-bold text-2xl">Results: </h1>
+        <div className="flex flex-wrap gap-5">
+          {results.length > 0 ? (
+            results.map((elem) => {
+              return (
+                <Item
+                  key={elem.created}
+                  name={elem.name}
+                  height={elem.height}
+                  mass={elem.mass}
+                  birthYear={elem.birth_year}
+                />
+              );
+            })
+          ) : (
+            <p className="flex absolute top-1/2 left-1/2 justify-center">
+              No results
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };

@@ -10,7 +10,6 @@ export const useLocalStorage = (): {
 
   const handleItem = (URL: string) => {
     setItem(() => URL);
-    console.log('state', item);
   };
 
   useEffect(() => {
