@@ -1,89 +1,102 @@
-import { ChangeEvent, Component, FormEvent, ReactNode } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { MagnifyingGlass } from 'react-loader-spinner';
+import { SelectedItem } from '../constants/interfaces';
 
 interface SearchProps {
-  people: string;
   handlePeople: (people: string) => void;
+  handleCurrentPage: (selectedItem: SelectedItem) => void;
+  item: string;
+  handleItem: (URL: string) => void;
 }
 
-type Props = Readonly<SearchProps>;
+export const Search = ({
+  handlePeople,
+  handleCurrentPage,
+  item,
+  handleItem,
+}: SearchProps) => {
+  const [input, setInput] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>();
+  const [error, setError] = useState<string>('');
 
-export default class Search extends Component<Props> {
-  state = {
-    input: '',
-    error: '',
-    loading: false,
-  };
-
-  setRequestToLS = (request: string) => {
-    localStorage.setItem('lastRequest', request);
-  };
-
-  fetchData = (request: string) => {
-    fetch(request)
+  const fetchData = async (request: string) => {
+    setLoading(true);
+    const data = await fetch(request)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        this.props.handlePeople(JSON.stringify(data));
-        this.setState({ loading: false });
+        setLoading(false);
+        return data;
       });
+    handlePeople(JSON.stringify(data));
   };
 
-  handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    this.setState({ loading: true });
-    this.setRequestToLS(
-      `https://swapi.dev/api/people/?search=${this.state.input}`
-    );
-    this.fetchData(`https://swapi.dev/api/people/?search=${this.state.input}`);
+    handleItem(`https://swapi.dev/api/people/?search=${input}`);
   };
 
-  handleInput = (e: ChangeEvent) => {
-    this.setState({
-      input: (e.target as HTMLInputElement).value.trim(),
-    });
+  const handleInput = (e: ChangeEvent) => {
+    setInput((e.target as HTMLInputElement).value.trim());
   };
 
-  componentDidMount(): void {
-    this.setState({ loading: true });
-    if (localStorage.getItem('lastRequest')) {
-      this.fetchData(`${localStorage.getItem('lastRequest')}`);
-    } else {
-      this.fetchData(
-        `https://swapi.dev/api/people/?search=${this.state.input}`
-      );
-    }
-  }
+  useEffect(() => {
+    if (error) throw new Error();
+    fetchData(item);
+  }, [error, item]);
 
-  render(): ReactNode {
-    if (this.state.error) throw new Error();
-    if (this.state.loading) {
-      return <p>Loading...</p>;
-    } else
-      return (
-        <div>
-          <form onSubmit={(e: FormEvent) => this.handleSubmit(e)}>
-            <input
-              type="search"
-              placeholder="Search ..."
-              onChange={(e: ChangeEvent) => this.handleInput(e)}
-              required={true}
+  return (
+    <>
+      {loading && (
+        <div className="w-full h-full flex absolute justify-center backdrop-blur-sm backdrop-brightness-75 items-center">
+          <p>
+            <MagnifyingGlass
+              height="80"
+              width="80"
+              color="#e15b64"
+              ariaLabel="loading"
             />
-            <button type="submit">Search</button>
-            <button
-              type="button"
-              onClick={() => {
-                this.fetchData(`https://swapi.dev/api/people/`);
-                this.setRequestToLS(`https://swapi.dev/api/people/`);
-              }}
-            >
-              reset
-            </button>
-          </form>
-          <button onClick={() => this.setState({ error: 'yes' })}>
+          </p>
+        </div>
+      )}
+      <div className="flex p-5 justify-end">
+        <form
+          className="flex gap-3"
+          onSubmit={(e: FormEvent) => handleSubmit(e)}
+        >
+          <input
+            className="border-b-2 outline-none border-black pl-2"
+            type="search"
+            placeholder="Search ..."
+            onChange={(e: ChangeEvent) => handleInput(e)}
+            required={true}
+            value={input}
+          />
+          <button className="border border-black p-1 rounded-md" type="submit">
+            Search
+          </button>
+          <button
+            className="border border-black p-1 rounded-md"
+            type="button"
+            onClick={() => {
+              fetchData(`https://swapi.dev/api/people/`);
+              handleCurrentPage({ selected: 0 });
+              setInput('');
+            }}
+          >
+            Reset Search
+          </button>
+          <button
+            className="border border-black p-1 rounded-md"
+            onClick={() => {
+              setError('error');
+            }}
+          >
             Throw an error
           </button>
-        </div>
-      );
-  }
-}
+        </form>
+      </div>
+    </>
+  );
+};

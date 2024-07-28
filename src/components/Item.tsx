@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ItemProps {
   name: string;
@@ -7,17 +7,15 @@ interface ItemProps {
   birthYear: string;
 }
 
-type Props = Readonly<ItemProps>;
-
-export default class Item extends Component<Props> {
-  render(): ReactNode {
-    return (
-      <div>
-        <h2>{this.props.name}</h2>
-        <p>Height: {this.props.height}</p>
-        <p>Mass: {this.props.mass}</p>
-        <p>Birth Year: {this.props.birthYear}</p>
+export const Item = ({ name, height, mass, birthYear }: ItemProps) => {
+  return (
+    <Link replace={true} to={`./details/${name}`}>
+      <div className="flex flex-col gap-1 w-52 border rounded-md border-black p-2 hover:cursor-pointer hover:shadow-[1px_2px_8px]">
+        <h2 className="font-semibold flex justify-center">{name}</h2>
+        <p>Height: {height}</p>
+        <p>Mass: {mass}</p>
+        <p>Birth Year: {birthYear}</p>
       </div>
-    );
-  }
-}
+    </Link>
+  );
+};
