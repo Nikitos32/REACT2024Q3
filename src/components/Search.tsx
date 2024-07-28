@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { MagnifyingGlass } from 'react-loader-spinner';
 import { SelectedItem } from '../constants/interfaces';
+import { Loader } from './Loader';
 
 interface SearchProps {
   handlePeople: (people: string) => void;
@@ -48,18 +48,7 @@ export const Search = ({
 
   return (
     <>
-      {loading && (
-        <div className="w-full h-full flex absolute justify-center backdrop-blur-sm backdrop-brightness-75 items-center">
-          <p>
-            <MagnifyingGlass
-              height="80"
-              width="80"
-              color="#e15b64"
-              ariaLabel="loading"
-            />
-          </p>
-        </div>
-      )}
+      {loading && <Loader />}
       <div className="flex p-5 justify-end">
         <form
           className="flex gap-3"
