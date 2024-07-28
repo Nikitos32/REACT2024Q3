@@ -62,11 +62,14 @@ export const Search = ({
             required={true}
             value={input}
           />
-          <button className="border border-black p-1 rounded-md" type="submit">
+          <button
+            className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
+            type="submit"
+          >
             Search
           </button>
           <button
-            className="border border-black p-1 rounded-md"
+            className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
             type="button"
             onClick={() => {
               fetchData(`https://swapi.dev/api/people/`);
@@ -77,7 +80,7 @@ export const Search = ({
             Reset Search
           </button>
           <button
-            className="border border-black p-1 rounded-md"
+            className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
             onClick={() => {
               setError('error');
             }}
