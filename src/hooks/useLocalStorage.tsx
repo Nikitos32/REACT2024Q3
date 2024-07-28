@@ -9,7 +9,7 @@ export const useLocalStorage = (): {
   );
 
   const handleItem = (URL: string) => {
-    setItem(() => URL);
+    setItem(URL);
   };
 
   useEffect(() => {

@@ -1,44 +1,40 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { MagnifyingGlass } from 'react-loader-spinner';
-import { SelectedItem } from '../App';
+import { SelectedItem } from '../constants/interfaces';
 
 interface SearchProps {
   handlePeople: (people: string) => void;
-  currentPage: number;
   handleCurrentPage: (selectedItem: SelectedItem) => void;
+  item: string;
+  handleItem: (URL: string) => void;
 }
 
 export const Search = ({
   handlePeople,
-  currentPage,
   handleCurrentPage,
+  item,
+  handleItem,
 }: SearchProps) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>();
   const [error, setError] = useState<string>('');
-  const { item, handleItem } = useLocalStorage();
 
-  const fetchData = (request: string) => {
+  const fetchData = async (request: string) => {
     setLoading(true);
-    fetch(request)
+    const data = await fetch(request)
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        handlePeople(JSON.stringify(data));
         setLoading(false);
-        handleItem(request);
+        return data;
       });
-  };
-
-  const fetchPage = (currentPage: number) => {
-    fetchData(`https://swapi.dev/api/people/?page=${currentPage}`);
+    handlePeople(JSON.stringify(data));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    fetchData(`https://swapi.dev/api/people/?search=${input}`);
+    handleItem(`https://swapi.dev/api/people/?search=${input}`);
   };
 
   const handleInput = (e: ChangeEvent) => {
@@ -47,16 +43,8 @@ export const Search = ({
 
   useEffect(() => {
     if (error) throw new Error();
-    if (item) {
-      fetchData(item);
-    } else {
-      fetchData(`https://swapi.dev/api/people/?search=${input}`);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    fetchPage(currentPage);
-  }, [currentPage]);
+    fetchData(item);
+  }, [error, item]);
 
   return (
     <>

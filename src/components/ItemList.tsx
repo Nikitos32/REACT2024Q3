@@ -1,16 +1,6 @@
+import { AiFillExclamationCircle } from 'react-icons/ai';
 import { Item } from './Item';
-
-interface ResultPeople {
-  name: string;
-  height: string;
-  mass: string;
-  birth_year: string;
-  created: string;
-}
-
-interface ItemListProps {
-  results: ResultPeople[];
-}
+import { ItemListProps } from '../constants/interfaces';
 
 export const ItemList = ({ results }: ItemListProps) => {
   return (
@@ -31,8 +21,8 @@ export const ItemList = ({ results }: ItemListProps) => {
               );
             })
           ) : (
-            <p className="flex absolute top-1/2 left-1/2 justify-center">
-              No results
+            <p className="flex justify-center text-xl items-center gap-2">
+              No results <AiFillExclamationCircle className="text-red-500" />
             </p>
           )}
         </div>
