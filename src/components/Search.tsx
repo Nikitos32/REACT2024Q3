@@ -1,39 +1,32 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { SelectedItem } from '../constants/interfaces';
 import { Loader } from './Loader';
+import { useGetPageQuery, useGetPersonQuery } from '../api/apiSlice';
 
 interface SearchProps {
   handlePeople: (people: string) => void;
   handleCurrentPage: (selectedItem: SelectedItem) => void;
   item: string;
   handleItem: (URL: string) => void;
+  currentPage: number;
 }
 
 export const Search = ({
   handlePeople,
   handleCurrentPage,
   item,
+  currentPage,
   handleItem,
 }: SearchProps) => {
   const [input, setInput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>();
   const [error, setError] = useState<string>('');
 
-  const fetchData = async (request: string) => {
-    setLoading(true);
-    const data = await fetch(request)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setLoading(false);
-        return data;
-      });
-    handlePeople(JSON.stringify(data));
-  };
+  const { data: person } = useGetPersonQuery(input);
+  const { data: page, isLoading } = useGetPageQuery(currentPage + 1);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    handlePeople(JSON.stringify(person));
     handleItem(`https://swapi.dev/api/people/?search=${input}`);
   };
 
@@ -43,12 +36,17 @@ export const Search = ({
 
   useEffect(() => {
     if (error) throw new Error();
-    fetchData(item);
-  }, [error, item]);
+    if (item.includes('search')) {
+      setInput(item.split('=')[1]);
+      handlePeople(JSON.stringify(person));
+    } else {
+      handlePeople(JSON.stringify(page));
+    }
+  }, [error, page]);
 
   return (
     <>
-      {loading && <Loader />}
+      {isLoading && <Loader />}
       <div className="flex p-5 justify-end">
         <form
           className="flex gap-3"
@@ -72,7 +70,6 @@ export const Search = ({
             className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
             type="button"
             onClick={() => {
-              fetchData(`https://swapi.dev/api/people/`);
               handleCurrentPage({ selected: 0 });
               setInput('');
             }}

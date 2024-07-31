@@ -8,8 +8,8 @@ export const apiSlice = createApi({
     getPerson: builder.query<ItemListProps, string>({
       query: (input: string) => `/?search=${input}`,
     }),
-    getPage: builder.query<ItemListProps, string>({
-      query: (currentPage: string) => `/?page=${currentPage}`,
+    getPage: builder.query<ItemListProps, number>({
+      query: (currentPage: number) => `/?page=${currentPage}`,
     }),
   }),
 });

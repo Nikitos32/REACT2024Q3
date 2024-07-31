@@ -5,7 +5,9 @@ export const useLocalStorage = (): {
   handleItem: (URL: string) => void;
 } => {
   const [item, setItem] = useState<string>(
-    localStorage.getItem('lastRequest') as string
+    localStorage.getItem('lastRequest')
+      ? (localStorage.getItem('lastRequest') as string)
+      : 'https://swapi.dev/api/people/?page=1'
   );
 
   const handleItem = (URL: string) => {

@@ -42,6 +42,7 @@ export const MainPage = () => {
       }
     >
       <Search
+        currentPage={currentPage}
         handleCurrentPage={handleCurrentPage}
         item={item}
         handlePeople={handlePeople}
