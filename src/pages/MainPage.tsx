@@ -7,6 +7,7 @@ import { SelectedItem } from '../constants/interfaces';
 import { IoIosWarning } from 'react-icons/io';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { Flyout } from '../components/Flyout';
 
 export const MainPage = () => {
   const [starWarsPeople, setStarWarsPeople] = useState<string>();
@@ -65,6 +66,7 @@ export const MainPage = () => {
         renderOnZeroPageCount={null}
         forcePage={currentPage}
       />
+      <Flyout />
     </ErrorBoundary>
   );
 };

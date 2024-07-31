@@ -21,12 +21,17 @@ export const Search = ({
   const [input, setInput] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const { data: person } = useGetPersonQuery(input);
-  const { data: page, isLoading } = useGetPageQuery(currentPage + 1);
+  const { data: person, isLoading: isLoadingPerson } = useGetPersonQuery(input);
+  const { data: page, isLoading: isLoadingPage } = useGetPageQuery(
+    currentPage + 1
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     handlePeople(JSON.stringify(person));
+    if (!input) {
+      handleCurrentPage({ selected: 0 });
+    }
     handleItem(`https://swapi.dev/api/people/?search=${input}`);
   };
 
@@ -46,18 +51,18 @@ export const Search = ({
 
   return (
     <>
-      {isLoading && <Loader />}
+      {(isLoadingPerson || isLoadingPage) && <Loader />}
       <div className="flex p-5 justify-end">
         <form
           className="flex gap-3"
           onSubmit={(e: FormEvent) => handleSubmit(e)}
         >
           <input
+            id="searchItem"
             className="border-b-2 outline-none border-black pl-2"
             type="search"
             placeholder="Search ..."
             onChange={(e: ChangeEvent) => handleInput(e)}
-            required={true}
             value={input}
           />
           <button
@@ -65,16 +70,6 @@ export const Search = ({
             type="submit"
           >
             Search
-          </button>
-          <button
-            className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
-            type="button"
-            onClick={() => {
-              handleCurrentPage({ selected: 0 });
-              setInput('');
-            }}
-          >
-            Reset Search
           </button>
           <button
             className="border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500"
