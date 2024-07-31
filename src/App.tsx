@@ -10,10 +10,22 @@ import { ErrorPage } from './components/ErrorPage';
 import { MainLayout } from './components/MainLayout';
 import { MyModal } from './components/MyModal';
 import ReactModal from 'react-modal';
+import { createContext, useState } from 'react';
 
 ReactModal.setAppElement('#root');
+export const ThemeContext = createContext({
+  theme: 'light',
+  toggleTheme: () => {},
+});
 
 export const App = () => {
+  const [theme, setTheme] = useState<string>('light');
+
+  const toggleTheme = () => {
+    theme === 'light' ? setTheme('dark') : setTheme('light');
+    console.log(theme);
+  };
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
@@ -32,5 +44,9 @@ export const App = () => {
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeContext.Provider value={{ theme: theme, toggleTheme: toggleTheme }}>
+      <RouterProvider router={router} />
+    </ThemeContext.Provider>
+  );
 };

@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from './Loader';
 import { useGetPersonQuery } from '../api/apiSlice';
+import { ThemeContext } from '../App';
+import classNames from 'classnames';
 
 export const MyModal = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
   const { data: person, isLoading } = useGetPersonQuery(params.name as string);
+  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     setIsOpen(true);
@@ -23,19 +26,34 @@ export const MyModal = () => {
     <>
       {isLoading && <Loader />}
       <ReactModal
-        className="w-1/3 h-1/3 top-1/3 left-1/3 absolute p-2 brightness-100"
+        className={classNames(
+          theme.theme === 'dark' && 'text-gray-500 bg-gray-900 border-gray-500',
+          'w-1/3 h-1/3 top-1/3 left-1/3 absolute p-2 brightness-100 rounded-xl'
+        )}
+        bodyOpenClassName={classNames(
+          theme.theme === 'dark' && 'brightness-75'
+        )}
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <div className="h-full border-2 rounded-md flex-col border-black p-2 gap-5 bg-white flex">
+        <div
+          className={classNames(
+            theme.theme === 'dark' &&
+              'text-gray-500 bg-gray-900 border-gray-500',
+            'h-full border-2 rounded-md flex-col border-black p-2 gap-5 bg-white flex'
+          )}
+        >
           <div className="flex">
             <p className="w-full flex justify-center font-semibold text-2xl">
               {params.name}
             </p>
             <button
               type="button"
-              className="border p-1 h-6 flex justify-center items-center w-6 border-black rounded-md hover:shadow-[1px_1px_5px]"
+              className={classNames(
+                theme.theme === 'dark' && ' border-gray-500',
+                'border p-1 h-6 flex justify-center items-center w-6 border-black rounded-md hover:shadow-[1px_1px_5px]'
+              )}
               onClick={closeModal}
             >
               X
