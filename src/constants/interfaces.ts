@@ -17,3 +17,7 @@ export interface ResultPeople {
 export interface ItemListProps {
   results: ResultPeople[];
 }
+
+export interface selectedState {
+  value: string[];
+}

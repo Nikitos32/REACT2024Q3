@@ -1,39 +1,40 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { MagnifyingGlass } from 'react-loader-spinner';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { SelectedItem } from '../constants/interfaces';
+import { Loader } from './Loader';
+import { useGetPageQuery, useGetPersonQuery } from '../api/apiSlice';
+import { ThemeContext } from '../App';
+import classNames from 'classnames';
 
 interface SearchProps {
   handlePeople: (people: string) => void;
   handleCurrentPage: (selectedItem: SelectedItem) => void;
   item: string;
   handleItem: (URL: string) => void;
+  currentPage: number;
 }
 
 export const Search = ({
   handlePeople,
   handleCurrentPage,
   item,
+  currentPage,
   handleItem,
 }: SearchProps) => {
   const [input, setInput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>();
   const [error, setError] = useState<string>('');
+  const theme = useContext(ThemeContext);
 
-  const fetchData = async (request: string) => {
-    setLoading(true);
-    const data = await fetch(request)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setLoading(false);
-        return data;
-      });
-    handlePeople(JSON.stringify(data));
-  };
+  const { data: person, isLoading: isLoadingPerson } = useGetPersonQuery(input);
+  const { data: page, isLoading: isLoadingPage } = useGetPageQuery(
+    currentPage + 1
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    handlePeople(JSON.stringify(person));
+    if (!input) {
+      handleCurrentPage({ selected: 0 });
+    }
     handleItem(`https://swapi.dev/api/people/?search=${input}`);
   };
 
@@ -43,52 +44,54 @@ export const Search = ({
 
   useEffect(() => {
     if (error) throw new Error();
-    fetchData(item);
-  }, [error, item]);
+    if (item.includes('search')) {
+      setInput(item.split('=')[1]);
+      handlePeople(JSON.stringify(person));
+    } else {
+      handlePeople(JSON.stringify(page));
+    }
+  }, [error, page]);
 
   return (
     <>
-      {loading && (
-        <div className="w-full h-full flex absolute justify-center backdrop-blur-sm backdrop-brightness-75 items-center">
-          <p>
-            <MagnifyingGlass
-              height="80"
-              width="80"
-              color="#e15b64"
-              ariaLabel="loading"
-            />
-          </p>
-        </div>
-      )}
-      <div className="flex p-5 justify-end">
+      {(isLoadingPerson || isLoadingPage) && <Loader />}
+      <div
+        className={classNames(
+          theme.theme === 'dark' && 'text-gray-500 bg-gray-900 border-gray-500',
+          'flex p-5 justify-end'
+        )}
+      >
         <form
           className="flex gap-3"
           onSubmit={(e: FormEvent) => handleSubmit(e)}
         >
           <input
-            className="border-b-2 outline-none border-black pl-2"
+            id="searchItem"
+            className={classNames(
+              theme.theme === 'dark' &&
+                'text-gray-500 bg-gray-900 border-gray-500',
+              'border-b-2 outline-none border-black pl-2'
+            )}
             type="search"
             placeholder="Search ..."
             onChange={(e: ChangeEvent) => handleInput(e)}
-            required={true}
             value={input}
           />
-          <button className="border border-black p-1 rounded-md" type="submit">
+          <button
+            className={classNames(
+              theme.theme === 'dark' && ' border-gray-500',
+              'border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-colors ease-in-out duration-500'
+            )}
+            type="submit"
+          >
             Search
           </button>
           <button
-            className="border border-black p-1 rounded-md"
-            type="button"
-            onClick={() => {
-              fetchData(`https://swapi.dev/api/people/`);
-              handleCurrentPage({ selected: 0 });
-              setInput('');
-            }}
-          >
-            Reset Search
-          </button>
-          <button
-            className="border border-black p-1 rounded-md"
+            aria-label="error-btn"
+            className={classNames(
+              theme.theme === 'dark' && ' border-gray-500',
+              'border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-colors  ease-in-out duration-500'
+            )}
             onClick={() => {
               setError('error');
             }}
