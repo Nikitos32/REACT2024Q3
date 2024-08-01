@@ -26,6 +26,7 @@ export const MyModal = () => {
     <>
       {isLoading && <Loader />}
       <ReactModal
+        ariaHideApp={false}
         className={classNames(
           theme.theme === 'dark' && 'text-gray-500 bg-gray-900 border-gray-500',
           'w-1/3 h-1/3 top-1/3 left-1/3 absolute p-2 brightness-100 rounded-xl'
@@ -49,6 +50,7 @@ export const MyModal = () => {
               {params.name}
             </p>
             <button
+              aria-label="x"
               type="button"
               className={classNames(
                 theme.theme === 'dark' && ' border-gray-500',

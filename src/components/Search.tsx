@@ -87,6 +87,7 @@ export const Search = ({
             Search
           </button>
           <button
+            aria-label="error-btn"
             className={classNames(
               theme.theme === 'dark' && ' border-gray-500',
               'border border-black p-1 rounded-md hover:bg-orange-400 hover:text-white transition-colors  ease-in-out duration-500'

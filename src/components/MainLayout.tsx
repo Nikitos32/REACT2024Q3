@@ -14,6 +14,7 @@ export const MainLayout = () => {
         )}
       >
         <button
+          aria-label="Set dark"
           className={classNames(
             theme.theme === 'dark'
               ? 'text-gray-500 bg-gray-900 border-gray-500'
