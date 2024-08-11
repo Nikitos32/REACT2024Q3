@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { clearStore } from '../reducers/selectedItemsSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { clearStore } from '../../reducers/selectedItemsSlice';
 import { ThemeContext } from '../App';
 import classNames from 'classnames';
 

@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { selectItem, unselectItem } from '../reducers/selectedItemsSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { selectItem, unselectItem } from '../../reducers/selectedItemsSlice';
 import { ThemeContext } from '../App';
 import classNames from 'classnames';
 

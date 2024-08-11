@@ -1,8 +1,8 @@
-import { Item } from '@/components/Item';
-import { ItemList } from '@/components/ItemList';
-import { Search } from '@/components/Search';
-import { MainPage } from '@/pages/MainPage';
-import { store } from '@/store/store';
+import { Item } from '@/app/components/Item';
+import { ItemList } from '@/app/components/ItemList';
+import { Search } from '@/app/components/Search';
+import { MainPage } from '@/app/pages/MainPage';
+import { store } from '@/app/store/store';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';

@@ -1,9 +1,9 @@
 import { test, expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Flyout } from '@/components/Flyout';
+import { Flyout } from '@/app/components/Flyout';
 import { Provider } from 'react-redux';
-import { store } from '@/store/store';
-import { MainLayout } from '@/components/MainLayout';
+import { store } from '@/app/store/store';
+import { MainLayout } from '@/app/components/MainLayout';
 import App from '@/App';
 
 test('should render button', () => {

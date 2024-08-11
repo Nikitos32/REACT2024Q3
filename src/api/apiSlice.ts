@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ItemListProps } from '../constants/interfaces';
+import { ItemListProps } from '../app/constants/interfaces';
 
 export const apiSlice = createApi({
   reducerPath: 'api',

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { apiSlice } from '../api/apiSlice';
+import { apiSlice } from '../../api/apiSlice';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 import selectedItemsSlice from '../reducers/selectedItemsSlice';
 
