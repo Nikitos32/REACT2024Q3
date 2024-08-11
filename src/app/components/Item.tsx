@@ -1,9 +1,9 @@
 import { ChangeEvent, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { selectItem, unselectItem } from '../../reducers/selectedItemsSlice';
-import { ThemeContext } from '../App';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { selectItem, unselectItem } from '../reducers/selectedItemsSlice';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
+import Link from 'next/link';
 
 interface ItemProps {
   name: string;
@@ -38,7 +38,7 @@ export const Item = ({ name, height, mass, birthYear }: ItemProps) => {
       <p>Mass: {mass}</p>
       <p>Birth Year: {birthYear}</p>
       <div className="flex justify-between items-center">
-        <Link replace={true} to={`./details/${name}`}>
+        <Link replace={true} href={`./details/${name}`}>
           <button
             className={classNames(
               theme.theme === 'dark' && 'border-gray-500',

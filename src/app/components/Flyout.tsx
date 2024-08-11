@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { clearStore } from '../../reducers/selectedItemsSlice';
-import { ThemeContext } from '../App';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { clearStore } from '../reducers/selectedItemsSlice';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
 
 export const Flyout = () => {
@@ -13,7 +13,7 @@ export const Flyout = () => {
   };
 
   const handleContentFile = () => {
-    const res: string = count.reduce((current, elem) => {
+    const res: string = count.reduce((current: string, elem: string) => {
       return (current += `Name:${elem}\nUrl: https://swapi.dev/api/people/?search=${elem.split(' ').join('%')}\n`);
     }, '');
     return res;

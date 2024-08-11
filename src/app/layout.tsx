@@ -1,3 +1,5 @@
+import './index.css';
+
 export default function RootLayout({
   children,
 }: {
@@ -6,16 +8,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/src/index.css" />
         <title>Nikitos32</title>
       </head>
       <body>
-        <div
-          id="root"
-          className="height: 100%; display: flex; flex-direction: column"
-        >
+        <div id="root" className="h-full flex flex-col">
           {children}
         </div>
       </body>

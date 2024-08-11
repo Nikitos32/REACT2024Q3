@@ -1,9 +1,11 @@
+'use client';
+
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { MdReportGmailerrorred } from 'react-icons/md';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './components/App';
 
-export const ErrorPage = () => {
+export default function ErrorPage() {
   const theme = useContext(ThemeContext);
   return (
     <p
@@ -17,4 +19,4 @@ export const ErrorPage = () => {
       404 PAGE NOT FOUND <MdReportGmailerrorred size={75} />
     </p>
   );
-};
+}

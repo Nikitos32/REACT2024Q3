@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from './Loader';
-import { useGetPersonQuery } from '../../api/apiSlice';
-import { ThemeContext } from '../App';
+import { useGetPersonQuery } from '../api/apiSlice';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
 
 export const MyModal = () => {

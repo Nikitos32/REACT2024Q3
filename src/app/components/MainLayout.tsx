@@ -1,6 +1,5 @@
 import { useContext } from 'react';
-import { Outlet } from 'react-router-dom';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
 
 export const MainLayout = () => {
@@ -27,7 +26,6 @@ export const MainLayout = () => {
           {theme.theme === 'light' ? 'dark' : 'light'}
         </button>
       </header>
-      <Outlet />
     </>
   );
 };
