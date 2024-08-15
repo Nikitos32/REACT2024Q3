@@ -14,11 +14,9 @@ const App = () => {
   };
 
   return (
-    <>
-      <ThemeContext.Provider
-        value={{ theme: theme, toggleTheme: toggleTheme }}
-      />
-    </>
+    <ThemeContext.Provider
+      value={{ theme: theme, toggleTheme: toggleTheme }}
+    ></ThemeContext.Provider>
   );
 };
 

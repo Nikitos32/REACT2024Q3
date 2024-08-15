@@ -4,9 +4,11 @@ import classNames from 'classnames';
 import { useContext } from 'react';
 import { MdReportGmailerrorred } from 'react-icons/md';
 import { ThemeContext } from './components/App';
+import { permanentRedirect } from 'next/navigation';
 
 export default function ErrorPage() {
   const theme = useContext(ThemeContext);
+  setTimeout(permanentRedirect(`/page/1`), 5000);
   return (
     <p
       className={classNames(
