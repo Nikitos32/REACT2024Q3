@@ -7,10 +7,13 @@ export default mergeConfig(
   defineConfig({
     test: {
       globals: true,
-      setupFiles: './jest.setup.ts',
       environment: 'jsdom',
       reporters: ['json', 'default'],
       outputFile: './test-output.json',
+      setupFiles: ['./setupTests.js'],
+      coverage: {
+        include: ['src/**/*.{js,jsx,ts,tsx}'],
+      },
     },
   })
 );

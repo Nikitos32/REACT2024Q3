@@ -1,16 +1,17 @@
+'use client';
+
 import { useContext, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
-import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from './Loader';
 import { useGetPersonQuery } from '../api/apiSlice';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
-export const MyModal = () => {
+export const MyModal = ({ params }: { params: { title: string } }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const params = useParams();
-  const navigate = useNavigate();
-  const { data: person, isLoading } = useGetPersonQuery(params.name as string);
+  const { data: person, isLoading } = useGetPersonQuery(params.title as string);
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
@@ -19,11 +20,11 @@ export const MyModal = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-    navigate('..');
+    window.location.href = '..';
   };
 
   return (
-    <>
+    <Provider store={store}>
       {isLoading && <Loader />}
       <ReactModal
         ariaHideApp={false}
@@ -47,7 +48,7 @@ export const MyModal = () => {
         >
           <div className="flex">
             <p className="w-full flex justify-center font-semibold text-2xl">
-              {params.name}
+              {params.title.split('%20').join(' ')}
             </p>
             <button
               aria-label="x"
@@ -81,6 +82,6 @@ export const MyModal = () => {
           </div>
         </div>
       </ReactModal>
-    </>
+    </Provider>
   );
 };

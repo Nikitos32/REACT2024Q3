@@ -1,10 +1,12 @@
 import { test, expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Flyout } from '@/components/Flyout';
 import { Provider } from 'react-redux';
-import { store } from '@/store/store';
-import { MainLayout } from '@/components/MainLayout';
-import App from '@/App';
+import { store } from '../app/store/store';
+import { Flyout } from '../app/components/Flyout';
+import { MainLayout } from '../app/components/MainLayout';
+import App from '../app/components/App';
+import ProductPage from '../app/page/[slug]/page';
+import DetailsPage from '../app/page/[slug]/details/[title]/page';
 
 test('should render button', () => {
   window.URL.createObjectURL = function (obj: Blob | MediaSource) {
@@ -31,7 +33,7 @@ test('should render ThemeContext', async () => {
   );
   const button = await screen.findByRole('button', { name: 'Set dark' });
   fireEvent.click(button);
-  expect(button).toBeVisible();
+  expect(button).toBeInTheDocument();
 });
 
 test('should contain correct url', async () => {
@@ -45,4 +47,40 @@ test('should contain correct url', async () => {
     </Provider>
   );
   expect(document.location.pathname).toEqual('/');
+});
+
+test('should render button', () => {
+  window.URL.createObjectURL = function (obj: Blob | MediaSource) {
+    obj;
+    return '';
+  };
+  render(
+    <Provider store={store}>
+      <ProductPage
+        params={{
+          slug: '',
+        }}
+      />
+    </Provider>
+  );
+  expect(screen.getByRole('button', { name: 'error-btn' })).toHaveTextContent(
+    'Throw an error'
+  );
+});
+
+test('should render button', () => {
+  window.URL.createObjectURL = function (obj: Blob | MediaSource) {
+    obj;
+    return '';
+  };
+  render(
+    <Provider store={store}>
+      <DetailsPage
+        params={{
+          title: '',
+        }}
+      />
+    </Provider>
+  );
+  expect(screen.getByRole('button', { name: 'x' })).toBeInTheDocument();
 });

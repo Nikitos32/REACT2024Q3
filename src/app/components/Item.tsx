@@ -1,8 +1,7 @@
 import { ChangeEvent, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { selectItem, unselectItem } from '../reducers/selectedItemsSlice';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
 
 interface ItemProps {
@@ -38,16 +37,15 @@ export const Item = ({ name, height, mass, birthYear }: ItemProps) => {
       <p>Mass: {mass}</p>
       <p>Birth Year: {birthYear}</p>
       <div className="flex justify-between items-center">
-        <Link replace={true} to={`./details/${name}`}>
-          <button
-            className={classNames(
-              theme.theme === 'dark' && 'border-gray-500',
-              'border p-1 border-black rounded-sm hover:shadow-[1px_1px_2px] hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500'
-            )}
-          >
-            Show Details
-          </button>
-        </Link>
+        <button
+          onClick={() => (window.location.href = `./1/details/${name}`)}
+          className={classNames(
+            theme.theme === 'dark' && 'border-gray-500',
+            'border p-1 border-black rounded-sm hover:shadow-[1px_1px_2px] hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500'
+          )}
+        >
+          Show Details
+        </button>
         <label
           className="cursor-pointer select-none"
           htmlFor={`checkbox_${name}`}

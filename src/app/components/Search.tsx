@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { SelectedItem } from '../constants/interfaces';
 import { Loader } from './Loader';
 import { useGetPageQuery, useGetPersonQuery } from '../api/apiSlice';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './App';
 import classNames from 'classnames';
 
 interface SearchProps {

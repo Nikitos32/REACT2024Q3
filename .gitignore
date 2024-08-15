@@ -89,3 +89,7 @@ lerna-debug.log
 Thumbs.db
 
 test-output.json
+
+.next
+next-env.d.ts
+dist

@@ -3,7 +3,7 @@ import { Item } from './Item';
 import { ItemListProps } from '../constants/interfaces';
 import classNames from 'classnames';
 import { useContext } from 'react';
-import { ThemeContext } from '../App';
+import { ThemeContext } from './App';
 
 export const ItemList = ({ results }: ItemListProps) => {
   const theme = useContext(ThemeContext);

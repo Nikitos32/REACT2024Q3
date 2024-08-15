@@ -1,4 +1,4 @@
-import { ErrorPage } from '@/components/ErrorPage';
+import ErrorPage from '../app/not-found';
 import { render, screen } from '@testing-library/react';
 
 test('renders a message', () => {
