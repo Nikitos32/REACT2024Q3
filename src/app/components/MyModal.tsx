@@ -8,13 +8,11 @@ import { ThemeContext } from './App';
 import classNames from 'classnames';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-import { useRouter } from 'next/navigation';
 
 export const MyModal = ({ params }: { params: { title: string } }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const { data: person, isLoading } = useGetPersonQuery(params.title as string);
   const theme = useContext(ThemeContext);
-  const router = useRouter();
 
   useEffect(() => {
     setIsOpen(true);
@@ -22,7 +20,7 @@ export const MyModal = ({ params }: { params: { title: string } }) => {
 
   const closeModal = () => {
     setIsOpen(false);
-    router.push('..', { scroll: false });
+    window.location.href = '..';
   };
 
   return (

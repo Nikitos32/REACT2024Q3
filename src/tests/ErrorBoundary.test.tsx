@@ -1,6 +1,6 @@
-/* import ErrorBoundary from '@/app/components/ErrorBoundary';
-import { Search } from '@/app/components/Search';
-import { store } from '@/app/store/store';
+import ErrorBoundary from '../app/components/ErrorBoundary';
+import { Search } from '../app/components/Search';
+import { store } from '../app/store/store';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ReactPaginate from 'react-paginate';
 import { Provider } from 'react-redux';
@@ -54,4 +54,3 @@ test('renders a message', () => {
   const paragraph = screen.getByRole('paragraph');
   expect(paragraph).toBeInTheDocument();
 });
- */

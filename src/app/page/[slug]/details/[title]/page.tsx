@@ -1,5 +1,5 @@
 import { ItemListProps, ResultPeople } from '@/app/constants/interfaces';
-import { ModalPage } from '@/app/myPages/ModalPage';
+import { ModalPage } from '../../../../../app/myPages/ModalPage';
 
 interface dynamicParams {
   slug: string;
@@ -23,6 +23,6 @@ export async function generateStaticParams() {
   return names;
 }
 
-export default function ProductPage({ params }: { params: { title: string } }) {
+export default function DetailsPage({ params }: { params: { title: string } }) {
   return <ModalPage params={params} />;
 }

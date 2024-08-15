@@ -1,4 +1,4 @@
-import { MainPage } from '@/app/myPages/MainPage';
+import { MainPage } from '../../../app/myPages/MainPage';
 import React from 'react';
 
 export function generateStaticParams() {

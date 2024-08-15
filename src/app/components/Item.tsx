@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { selectItem, unselectItem } from '../reducers/selectedItemsSlice';
 import { ThemeContext } from './App';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
 
 interface ItemProps {
   name: string;
@@ -16,7 +15,6 @@ export const Item = ({ name, height, mass, birthYear }: ItemProps) => {
   const dispatch = useAppDispatch();
   const count = useAppSelector((state) => state.selectedItems.value);
   const theme = useContext(ThemeContext);
-  const router = useRouter();
 
   const handleSelect = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -40,7 +38,7 @@ export const Item = ({ name, height, mass, birthYear }: ItemProps) => {
       <p>Birth Year: {birthYear}</p>
       <div className="flex justify-between items-center">
         <button
-          onClick={() => router.push(`./1/details/${name}`)}
+          onClick={() => (window.location.href = `./1/details/${name}`)}
           className={classNames(
             theme.theme === 'dark' && 'border-gray-500',
             'border p-1 border-black rounded-sm hover:shadow-[1px_1px_2px] hover:bg-orange-400 hover:text-white transition-all ease-in-out duration-500'
