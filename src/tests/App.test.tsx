@@ -1,12 +1,12 @@
 import { test, expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { store } from '../app/store/store';
-import { Flyout } from '../app/components/Flyout';
-import { MainLayout } from '../app/components/MainLayout';
-import App from '../app/components/App';
-import ProductPage from '../app/page/[slug]/page';
-import DetailsPage from '../app/page/[slug]/details/[title]/page';
+import { store } from '../../app/store/store';
+import { Flyout } from '../../app/components/Flyout';
+import { MainLayout } from '../../app/components/MainLayout';
+import App from '../../app/components/App';
+import ProductPage from '../../app/page/[slug]/page';
+import DetailsPage from '../../app/page/[slug]/details/[title]/page';
 
 test('should render button', () => {
   window.URL.createObjectURL = function (obj: Blob | MediaSource) {

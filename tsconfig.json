@@ -40,7 +40,8 @@
     "src",
     "./jest.setup.ts",
     "./dist/types/**/*.ts",
-    "./next-env.d.ts"
+    "./next-env.d.ts",
+    "app"
   ],
   "exclude": ["./node_modules"],
   "plugins": [
